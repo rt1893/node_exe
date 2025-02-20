@@ -1,12 +1,14 @@
-const express = require('express');
-const app = express();
+const http = require('http');
 
-const PORT = process.env.PORT || 5001;
+const hostname = '0.0.0.0'; // Use '0.0.0.0' to listen on all available interfaces
+const port = 5000;  // Port number
 
-app.get('/', (req, res) => {
-  res.send('Hello, HTTPS!');
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello, World!\n');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });

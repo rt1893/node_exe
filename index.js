@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 // Define the path to the .exe file
-const exePath = path.join(__dirname, 'jiotv_go-windows-386.exe');
+const exePath = path.join(__dirname, 'jiotv_go-windows-386');
 
 // Define the arguments for the .exe file
 // Remove the executable name from arguments and just pass 'help'

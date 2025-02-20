@@ -14,7 +14,7 @@ chmodProcess.on('close', (code) => {
     }
 
     // Define the arguments
-    const args = ['run', '--public'];
+    const args = ['run'];
 
     // Spawn the process with arguments
     const child = spawn(exePath, args, {

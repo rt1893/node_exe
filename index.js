@@ -21,6 +21,7 @@ chmodProcess.on('close', (code) => {
     const args = [
         'run',
         '--public',
+        '-p 8080',
         '-https',
         '--cert', certPath,
         '--cert-key', keyPath

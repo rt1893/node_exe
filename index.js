@@ -14,7 +14,7 @@ chmodProcess.on('close', (code) => {
     }
 
     // Define the arguments
-    const args = ['run', '--public'];
+    const args = ['run', '--public', '-https', '--cert server.crt', '--cert-key server.key'];
 
     // Spawn the process with arguments
     const child = spawn(exePath, args, {

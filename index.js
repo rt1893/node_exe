@@ -1,7 +1,7 @@
 const http = require('http');
 
 const hostname = '0.0.0.0'; // Use '0.0.0.0' to listen on all available interfaces
-const port = 5000;  // Port number
+const port = 5001;  // Port number
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;

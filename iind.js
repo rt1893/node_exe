@@ -1,75 +1,38 @@
-const express = require('express');
+const { exec } = require('child_process');
+const axios = require('axios');
 const path = require('path');
-const { spawn } = require('child_process');
 
-const app = express();
-const PORT = process.env.PORT || 3001;
-const HOST = '0.0.0.0';
+// Path to your Linux executable file
+const executablePath = path.join(__dirname, 'jiotv_go-linux-386');
 
-// Path to the Linux executable
-const exePath = path.join(__dirname, 'jiotv_go-linux-386');
-const certPath = path.join(__dirname, 'server.crt');
-const keyPath = path.join(__dirname, 'server.key');
-
-// Ensure the executable has the right permissions
-const chmod = spawn('chmod', ['+x', exePath]);
-
-chmod.on('close', (code) => {
-
-    if (code !== 0) {
-        console.error('Failed to set executable permissions.');
-        return;
+// Function to execute the Linux file
+function runExecutable() {
+  exec(executablePath, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
     }
+    
+    // Log the output of the executable
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
 
-    console.log('Permissions set successfully.');
+    // Once the executable is run, assume it generates a web service on port 5001
+    accessWebService();
+  });
+}
 
-    // Define your route
-    app.get('/run-exe', (req, res) => {
-
-        // Define the arguments - include the dynamic port
-        const args = [
-            'serve',
-            '--https',
-            '--host', HOST,
-            '--tls-cert', certPath,
-            '--tls-key', keyPath,
-        ];
-
-        // Spawn the process for the executable
-        const exeProcess = spawn(exePath, args);
-
-        // Capture the output (stdout)
-        exeProcess.stdout.on('data', (data) => {
-            console.log(`stdout: ${data}`);
-        });
-
-        // Capture any error messages (stderr)
-        exeProcess.stderr.on('data', (data) => {
-            console.error(`stderr: ${data}`);
-        });
-
-        // Handle process exit
-        exeProcess.on('close', (code) => {
-            if (code === 0) {
-                res.send('Executable ran successfully.');
-            } else {
-                res.status(500).send(`Executable failed with code ${code}`);
-            }
-        });
-
-        // Handle any errors with the process itself
-        exeProcess.on('error', (err) => {
-            console.error(`Failed to start process: ${err.message}`);
-            res.status(500).send('Failed to execute the file.');
-        });
+// Function to access the web service on port 5001
+function accessWebService() {
+  // Making a GET request to the service running on port 5001
+  axios.get('http://localhost:5001')
+    .then(response => {
+      console.log('Web Service Response:', response.data);
+    })
+    .catch(error => {
+      console.error('Error accessing the web service:', error);
     });
+}
 
-    // Start the Express server
-    app.listen(PORT, () => {
-        console.log(`Server is running at http://localhost:${PORT}`);
-    });
-});
-
-chmod.on('error', (err) => {
-    console.error(`Error while setting permissions: ${err.message}`);
-});
+// Run the executable and then access the web service
+runExecutable();

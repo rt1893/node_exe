@@ -1,6 +1,7 @@
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const http = require('https');
 
 // Define the path to the Linux executable
 const exePath = path.join(__dirname, 'jiotv_go-linux-386');

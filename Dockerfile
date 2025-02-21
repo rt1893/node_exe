@@ -20,4 +20,4 @@ RUN chmod +x /app/jiotv_go
 EXPOSE 5001
 
 # Run the executable when the container starts
-CMD ["./jiotv_go"]
+CMD ["./jiotv_go", "run"]

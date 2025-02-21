@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 3001;
 
 // Path to the Linux executable
 const exePath = path.join(__dirname, 'jiotv_go-linux-386');
+const certPath = path.join(__dirname, 'server.crt');
+const keyPath = path.join(__dirname, 'server.key');
 
 // Ensure the executable has the right permissions
 const chmod = spawn('chmod', ['+x', exePath]);
@@ -23,8 +25,18 @@ chmod.on('close', (code) => {
     // Define your route
     app.get('/run-exe', (req, res) => {
 
+        // Define the arguments - include the dynamic port
+        const args = [
+            'run',
+            '--public',
+            '-https',
+            '--cert', certPath,
+            '--cert-key', keyPath,
+            '--port', PORT
+        ];
+
         // Spawn the process for the executable
-        const exeProcess = spawn(exePath, ['run']);
+        const exeProcess = spawn(exePath, args);
 
         // Capture the output (stdout)
         exeProcess.stdout.on('data', (data) => {

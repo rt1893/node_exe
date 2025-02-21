@@ -1,5 +1,4 @@
 const { exec } = require('child_process');
-const axios = require('axios');
 const path = require('path');
 
 // Path to your Linux executable file
@@ -12,7 +11,7 @@ function runExecutable() {
       console.error(`exec error: ${error}`);
       return;
     }
-    
+
     // Log the output of the executable
     console.log(`stdout: ${stdout}`);
     console.error(`stderr: ${stderr}`);
@@ -25,13 +24,31 @@ function runExecutable() {
 // Function to access the web service on port 5001
 function accessWebService() {
   // Making a GET request to the service running on port 5001
-  axios.get('http://localhost:5001')
-    .then(response => {
-      console.log('Web Service Response:', response.data);
-    })
-    .catch(error => {
-      console.error('Error accessing the web service:', error);
+  const options = {
+    hostname: 'localhost',
+    port: 5001,
+    path: '/',
+    method: 'GET',
+  };
+
+  const req = http.request(options, (res) => {
+    let data = '';
+
+    // Collect the response data
+    res.on('data', (chunk) => {
+      data += chunk;
     });
+
+    res.on('end', () => {
+      console.log('Web Service Response:', data);
+    });
+  });
+
+  req.on('error', (error) => {
+    console.error('Error accessing the web service:', error);
+  });
+
+  req.end();
 }
 
 // Run the executable and then access the web service

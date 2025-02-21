@@ -81,7 +81,8 @@ function accessWebService() {
       port: PORT,
       path: '/',
       method: 'GET',
-      ca: fs.readFileSync(certPath),  // Provide the custom certificate
+      ca: fs.readFileSync(certPath),  // Provide the custom certificate,
+      timeout: 20000, // Increase timeout to 20 seconds
     };
   
     const req = http.request(options, (res) => {

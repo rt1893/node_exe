@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy your executable file into the container
-COPY jiotv_go /app/
+COPY jiotv_go server.key server.crt /app/
 
 # Set the executable permission
 RUN chmod +x /app/jiotv_go
@@ -20,4 +20,4 @@ RUN chmod +x /app/jiotv_go
 EXPOSE 5001
 
 # Run the executable when the container starts
-CMD ["./jiotv_go", "run"]
+CMD ["./jiotv_go", "run", "--https", "--tls-cert server.crt", "--tls-key server.key"]

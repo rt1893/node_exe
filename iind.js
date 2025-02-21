@@ -75,7 +75,7 @@ child.on('error', (error) => {
 function accessWebService() {
     // Making a GET request to the service running on port 5001
     const options = {
-      hostname: 'localhost',
+      hostname: 'node-exe.onrender.com',
       port: 5001,
       path: '/',
       method: 'GET',

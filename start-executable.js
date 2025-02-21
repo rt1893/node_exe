@@ -1,8 +1,12 @@
 const { exec } = require('child_process');
 const http = require('http');
+const path = require('path');
 
-// Path to your Linux executable (ensure the executable is in your repo or bundle it as part of the deployment)
-const executablePath = '/workspaces/node_exe/jiotv_go'; // Adjust the path accordingly
+// Construct the path dynamically using path.join
+const executablePath = path.join(__dirname, 'node_exe', 'jiotv_go');
+
+// Log the full path for debugging
+console.log('Executable Path:', executablePath);
 
 // Function to run the executable
 function runExecutable() {

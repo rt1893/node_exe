@@ -28,13 +28,11 @@ chmod.on('close', (code) => {
 
         // Define the arguments - include the dynamic port
         const args = [
-            'run',
-            //'--public',
-            '-https',
-            '--cert', certPath,
-            '--cert-key', keyPath,
-            '--port', 5001,
-            '--host', HOST,
+            'serve',
+            '--https',
+            '--host 0.0.0.0',
+            '--tls-cert', certPath,
+            '--tls-key', keyPath,
         ];
 
         // Spawn the process for the executable

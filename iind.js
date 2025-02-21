@@ -15,7 +15,7 @@ if (!fs.existsSync(exePath)) {
 const chmodProcess = spawn('chmod', ['+x', exePath]);
 
 // Define the arguments - include the dynamic port
-const args = ['run'];
+const args = ['run','--https'];
 
 // Spawn the process with arguments
 const child = spawn(exePath, args, {

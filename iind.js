@@ -26,11 +26,19 @@ chmod.on('close', (code) => {
     // Define your route
     app.get('/run-exe', (req, res) => {
 
+    });
+
+    // Start the Express server
+    app.listen(PORT, () => {
+        
+        console.log(`Server is running at http://localhost:${PORT}`);
+
         // Define the arguments - include the dynamic port
         const args = [
             'serve',
             '--https',
             '--host', HOST,
+            '--port', PORT,
             '--tls-cert', certPath,
             '--tls-key', keyPath,
         ];
@@ -62,11 +70,6 @@ chmod.on('close', (code) => {
             console.error(`Failed to start process: ${err.message}`);
             res.status(500).send('Failed to execute the file.');
         });
-    });
-
-    // Start the Express server
-    app.listen(PORT, () => {
-        console.log(`Server is running at http://localhost:${PORT}`);
     });
 });
 

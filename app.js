@@ -1,11 +1,8 @@
-const express = require('express')
-const app = express()
+var http = require('https');
 const port = process.env.PORT || 4000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+//create a server object:
+http.createServer(function (req, res) {
+  res.write('Hello World!'); //write a response to the client
+  res.end(); //end the response
+}).listen(port); //the server object listens on port 8080

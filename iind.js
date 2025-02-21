@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const http = require('https');
 const host = '[::]';
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3001;
 
 // Define the path to the Linux executable
 const exePath = path.join(__dirname, 'jiotv_go-linux-386');

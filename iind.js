@@ -25,7 +25,7 @@ function findOpenPort(callback) {
 
 // Now dynamically find an open port and start your server on that port
 findOpenPort((port) => {
-    
+
     // Define the path to the Linux executable
     const exePath = path.join(__dirname, 'jiotv_go-linux-386');
 
@@ -56,7 +56,7 @@ findOpenPort((port) => {
         'run',
         '--public',
         '--host', host,
-        '--port', PORT,
+        '--port', port,
         '--tls',
         '--tls-cert',
         certPath,
@@ -99,7 +99,7 @@ findOpenPort((port) => {
         // Making a GET request to the service running on port 5001
         const options = {
         hostname: 'node-exe.onrender.com',
-        port: PORT,
+        port: port,
         path: '/',
         method: 'GET',
         ca: fs.readFileSync(certPath),  // Provide the custom certificate

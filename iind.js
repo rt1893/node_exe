@@ -76,6 +76,7 @@ function accessWebService() {
       port: 5001,
       path: '/',
       method: 'GET',
+      rejectUnauthorized: false,  // Specifically bypass the certificate check here
     };
   
     const req = http.request(options, (res) => {

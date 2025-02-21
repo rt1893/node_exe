@@ -4,103 +4,124 @@ const fs = require('fs');
 const http = require('https');
 const host = '[::]';
 const PORT = process.env.PORT || 3001;
+const net = require('net');
 
-// Define the path to the Linux executable
-const exePath = path.join(__dirname, 'jiotv_go-linux-386');
+// Function to find an available port dynamically
+function findOpenPort(callback) {
+  const server = net.createServer();
+  
+  // Try to listen on an available port
+  server.listen(0, '::', () => {
+    const port = server.address().port;
+    console.log(`Found open port: ${port}`);
+    server.close(); // Close the server after getting the port
+    callback(port);
+  });
 
-// Check if files exist before proceeding
-if (!fs.existsSync(exePath)) {
-    console.error(`Executable file not found: ${exePath}`);
-    return;
+  server.on('error', (err) => {
+    console.error('Error finding open port:', err);
+  });
 }
 
-// Define certificate paths
-const certPath = path.join(__dirname, 'server.crt');
-const keyPath = path.join(__dirname, 'server.key');
+// Now dynamically find an open port and start your server on that port
+findOpenPort((port) => {
+    
+    // Define the path to the Linux executable
+    const exePath = path.join(__dirname, 'jiotv_go-linux-386');
 
-if (!fs.existsSync(certPath)) {
-    console.error(`Certificate file not found: ${certPath}`);
-    return;
-}
-if (!fs.existsSync(keyPath)) {
-    console.error(`Key file not found: ${keyPath}`);
-    return;
-}
+    // Check if files exist before proceeding
+    if (!fs.existsSync(exePath)) {
+        console.error(`Executable file not found: ${exePath}`);
+        return;
+    }
 
-// Make the file executable using chmod
-const chmodProcess = spawn('chmod', ['+x', exePath]);
+    // Define certificate paths
+    const certPath = path.join(__dirname, 'server.crt');
+    const keyPath = path.join(__dirname, 'server.key');
 
-// Define the arguments - include the dynamic port
-const args = [
-    'run',
-    '--public',
-    '--host', host,
-    '--port', PORT,
-    '--tls',
-    '--tls-cert',
-    certPath,
-    '--tls-key',
-    keyPath
-];
+    if (!fs.existsSync(certPath)) {
+        console.error(`Certificate file not found: ${certPath}`);
+        return;
+    }
+    if (!fs.existsSync(keyPath)) {
+        console.error(`Key file not found: ${keyPath}`);
+        return;
+    }
 
-// Spawn the process with arguments
-const child = spawn(exePath, args, {
-    mode: 0o755
-});
+    // Make the file executable using chmod
+    const chmodProcess = spawn('chmod', ['+x', exePath]);
 
-// Capture the output (stdout)
-child.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-});
+    // Define the arguments - include the dynamic port
+    const args = [
+        'run',
+        '--public',
+        '--host', host,
+        '--port', PORT,
+        '--tls',
+        '--tls-cert',
+        certPath,
+        '--tls-key',
+        keyPath
+    ];
 
-// Capture any error messages (stderr)
-child.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-    accessWebService();
-});
+    // Spawn the process with arguments
+    const child = spawn(exePath, args, {
+        mode: 0o755
+    });
 
-// Handle process exit
-child.on('close', (code) => {
-    if (code !== 0) {
-        console.error(`Process failed with exit code ${code}`);
-    } else {
-        console.log(`Process completed successfully with code ${code}`);
+    // Capture the output (stdout)
+    child.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+    });
+
+    // Capture any error messages (stderr)
+    child.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+        accessWebService();
+    });
+
+    // Handle process exit
+    child.on('close', (code) => {
+        if (code !== 0) {
+            console.error(`Process failed with exit code ${code}`);
+        } else {
+            console.log(`Process completed successfully with code ${code}`);
+        }
+    });
+
+    // Handle process errors
+    child.on('error', (error) => {
+        console.error(`Process error: ${error.message}`);
+    });
+
+    // Function to access the web service on port 5001
+    function accessWebService() {
+        // Making a GET request to the service running on port 5001
+        const options = {
+        hostname: 'node-exe.onrender.com',
+        port: PORT,
+        path: '/',
+        method: 'GET',
+        ca: fs.readFileSync(certPath),  // Provide the custom certificate
+        };
+    
+        const req = http.request(options, (res) => {
+        let data = '';
+    
+        // Collect the response data
+        res.on('data', (chunk) => {
+            data += chunk;
+        });
+    
+        res.on('end', () => {
+            console.log('Web Service Response:', data);
+        });
+        });
+    
+        req.on('error', (error) => {
+        console.error('Error accessing the web service:', error);
+        });
+    
+        req.end();
     }
 });
-
-// Handle process errors
-child.on('error', (error) => {
-    console.error(`Process error: ${error.message}`);
-});
-
-// Function to access the web service on port 5001
-function accessWebService() {
-    // Making a GET request to the service running on port 5001
-    const options = {
-      hostname: 'node-exe.onrender.com',
-      port: PORT,
-      path: '/',
-      method: 'GET',
-      ca: fs.readFileSync(certPath),  // Provide the custom certificate
-    };
-  
-    const req = http.request(options, (res) => {
-      let data = '';
-  
-      // Collect the response data
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-  
-      res.on('end', () => {
-        console.log('Web Service Response:', data);
-      });
-    });
-  
-    req.on('error', (error) => {
-      console.error('Error accessing the web service:', error);
-    });
-  
-    req.end();
-  }
-  

@@ -2,6 +2,7 @@ const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const http = require('https');
+const host = 'localhost';
 
 // Define the path to the Linux executable
 const exePath = path.join(__dirname, 'jiotv_go-linux-386');
@@ -31,6 +32,7 @@ const chmodProcess = spawn('chmod', ['+x', exePath]);
 // Define the arguments - include the dynamic port
 const args = [
     'run',
+    '--host', host, 
     '--tls',
     '--tls-cert',
     certPath,
@@ -72,7 +74,7 @@ child.on('error', (error) => {
 function accessWebService() {
     // Making a GET request to the service running on port 5001
     const options = {
-      hostname: '127.0.0.1',
+      hostname: host,
       port: 5001,
       path: '/',
       method: 'GET',

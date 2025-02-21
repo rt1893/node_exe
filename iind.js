@@ -82,7 +82,10 @@ function accessWebService() {
       path: '/',
       method: 'GET',
       ca: fs.readFileSync(certPath),  // Provide the custom certificate,
-      timeout: 20000, // Increase timeout to 20 seconds
+      headers: {
+        'Connection': 'keep-alive',  // Keep the connection open
+      },
+      timeout: 60000,  // Increased timeout
     };
   
     const req = http.request(options, (res) => {
@@ -99,8 +102,10 @@ function accessWebService() {
     });
   
     req.on('error', (error) => {
-      console.error('Error accessing the web service:', error);
+        console.error('Error accessing the web service:', error.code);
+        console.error('Error details:', error);
     });
+      
   
     req.end();
   }

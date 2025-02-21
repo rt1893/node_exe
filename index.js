@@ -7,7 +7,6 @@ const exePath = path.join(__dirname, 'jiotv_go-linux-386');
 // Define certificate paths
 const certPath = path.join(__dirname, 'server.crt');
 const keyPath = path.join(__dirname, 'server.key');
-const port = 443;
 
 // Make the file executable using chmod
 const chmodProcess = spawn('chmod', ['+x', exePath]);
@@ -23,7 +22,6 @@ chmodProcess.on('close', (code) => {
         'run',
         '--public',
         '-https',
-        '--port', port,
         '--cert', certPath,
         '--cert-key', keyPath
     ];

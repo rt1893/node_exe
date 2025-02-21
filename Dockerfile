@@ -20,4 +20,4 @@ RUN chmod +x /app/jiotv_go
 EXPOSE 5001
 
 # Run the executable when the container starts
-CMD ["./jiotv_go", "run", "--https", "--tls-cert server.crt", "--tls-key server.key"]
+CMD ["./jiotv_go", "run", "--https", "--cert server.crt", "--cert-key server.key"]

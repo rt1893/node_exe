@@ -1,7 +1,7 @@
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
-const http = require('https');
+const http = require('http');
 const host = 'localhost';
 const PORT = 3000;
 
@@ -77,7 +77,7 @@ child.on('error', (error) => {
 function accessWebService() {
     // Making a GET request to the service running on port 5001
     const options = {
-      hostname: 'node-exe.onrender.com',
+      hostname: 'localhost',
       port: PORT,
       path: '/',
       method: 'GET',

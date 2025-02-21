@@ -11,11 +11,31 @@ if (!fs.existsSync(exePath)) {
     return;
 }
 
+// Define certificate paths
+const certPath = path.join(__dirname, 'server.crt');
+const keyPath = path.join(__dirname, 'server.key');
+
+if (!fs.existsSync(certPath)) {
+    console.error(`Certificate file not found: ${certPath}`);
+    return;
+}
+if (!fs.existsSync(keyPath)) {
+    console.error(`Key file not found: ${keyPath}`);
+    return;
+}
+
 // Make the file executable using chmod
 const chmodProcess = spawn('chmod', ['+x', exePath]);
 
 // Define the arguments - include the dynamic port
-const args = ['run','--https'];
+const args = [
+    'run',
+    '--tls',
+    '--tls-cert',
+    certPath,
+    '--tls-key',
+    keyPath
+];
 
 // Spawn the process with arguments
 const child = spawn(exePath, args, {

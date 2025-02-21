@@ -4,6 +4,7 @@ const { spawn } = require('child_process');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const HOST = '0.0.0.0';
 
 // Path to the Linux executable
 const exePath = path.join(__dirname, 'jiotv_go-linux-386');
@@ -28,11 +29,12 @@ chmod.on('close', (code) => {
         // Define the arguments - include the dynamic port
         const args = [
             'run',
-            '--public',
+            //'--public',
             '-https',
             '--cert', certPath,
             '--cert-key', keyPath,
-            '--port', 5001
+            '--port', 5001,
+            '--host', HOST,
         ];
 
         // Spawn the process for the executable

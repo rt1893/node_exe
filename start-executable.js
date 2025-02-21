@@ -1,9 +1,8 @@
 const { exec } = require('child_process');
 const http = require('http');
-const path = require('path');
 
 // Construct the path dynamically using path.join
-const executablePath = path.join(__dirname, 'node_exe', 'jiotv_go');
+const executablePath = './workspaces/node_exe/jiotv_go';
 
 // Log the full path for debugging
 console.log('Executable Path:', executablePath);

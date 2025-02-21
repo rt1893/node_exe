@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const http = require('https');
 const host = '[::]';
+const PORT = process.env.PORT || 10000;
 
 // Define the path to the Linux executable
 const exePath = path.join(__dirname, 'jiotv_go-linux-386');
@@ -33,7 +34,8 @@ const chmodProcess = spawn('chmod', ['+x', exePath]);
 const args = [
     'run',
     '--public',
-    '--host', host, 
+    '--host', host,
+    '--port', PORT,
     '--tls',
     '--tls-cert',
     certPath,
@@ -76,7 +78,7 @@ function accessWebService() {
     // Making a GET request to the service running on port 5001
     const options = {
       hostname: 'node-exe.onrender.com',
-      port: 5001,
+      port: PORT,
       path: '/',
       method: 'GET',
       ca: fs.readFileSync(certPath),  // Provide the custom certificate

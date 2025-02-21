@@ -5,9 +5,15 @@ const http = require('http');  // Ensure this line is here
 // Path to your Linux executable file
 const executablePath = path.join(__dirname, 'jiotv_go-linux-386');
 
-// Function to execute the Linux file
+// Arguments to be passed to the executable (example arguments)
+const args = ['run'];
+
+// Function to execute the Linux file with arguments
 function runExecutable() {
-  exec(executablePath, (error, stdout, stderr) => {
+  // Create the full command by joining the executable path and arguments
+  const command = `${executablePath} ${args.join(' ')}`;
+  
+  exec(command, (error, stdout, stderr) => {
     if (error) {
       console.error(`exec error: ${error}`);
       return;
@@ -52,5 +58,5 @@ function accessWebService() {
   req.end();
 }
 
-// Run the executable and then access the web service
+// Run the executable with arguments and then access the web service
 runExecutable();

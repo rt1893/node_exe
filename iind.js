@@ -75,7 +75,7 @@ child.on('error', (error) => {
 function accessWebService() {
     // Making a GET request to the service running on port 5001
     const options = {
-      hostname: host,
+      hostname: 'localhost',
       port: 5001,
       path: '/',
       method: 'GET',

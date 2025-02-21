@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const http = require('http');
 const host = 'localhost';
-const PORT = 3000;
+const PORT = 5001;
 
 // Define the path to the Linux executable
 const exePath = path.join(__dirname, 'jiotv_go-linux-386');
@@ -56,7 +56,7 @@ child.stdout.on('data', (data) => {
 // Capture any error messages (stderr)
 child.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
-    accessWebService();
+    //accessWebService();
 });
 
 // Handle process exit

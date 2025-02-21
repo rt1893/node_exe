@@ -1,62 +1,47 @@
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
-const http = require('http');  // Ensure this line is here
+const fs = require('fs');
 
-// Path to your Linux executable file
-const executablePath = path.join(__dirname, 'jiotv_go-linux-386');
+// Define the path to the Linux executable
+const exePath = path.join(__dirname, 'jiotv_go-linux-386');
 
-// Arguments to be passed to the executable (example arguments)
+// Check if files exist before proceeding
+if (!fs.existsSync(exePath)) {
+    console.error(`Executable file not found: ${exePath}`);
+    return;
+}
+
+// Make the file executable using chmod
+const chmodProcess = spawn('chmod', ['+x', exePath]);
+
+// Define the arguments - include the dynamic port
 const args = ['run'];
 
-// Function to execute the Linux file with arguments
-function runExecutable() {
-  // Create the full command by joining the executable path and arguments
-  const command = `${executablePath} ${args.join(' ')}`;
-  
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return;
+// Spawn the process with arguments
+const child = spawn(exePath, args, {
+    mode: 0o755
+});
+
+// Capture the output (stdout)
+child.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+});
+
+// Capture any error messages (stderr)
+child.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+});
+
+// Handle process exit
+child.on('close', (code) => {
+    if (code !== 0) {
+        console.error(`Process failed with exit code ${code}`);
+    } else {
+        console.log(`Process completed successfully with code ${code}`);
     }
+});
 
-    // Log the output of the executable
-    console.log(`stdout: ${stdout}`);
-    console.error(`stderr: ${stderr}`);
-
-    // Once the executable is run, assume it generates a web service on port 5001
-    accessWebService();
-  });
-}
-
-// Function to access the web service on port 5001
-function accessWebService() {
-  // Making a GET request to the service running on port 5001
-  const options = {
-    hostname: 'localhost',
-    port: 5001,
-    path: '/',
-    method: 'GET',
-  };
-
-  const req = http.request(options, (res) => {
-    let data = '';
-
-    // Collect the response data
-    res.on('data', (chunk) => {
-      data += chunk;
-    });
-
-    res.on('end', () => {
-      console.log('Web Service Response:', data);
-    });
-  });
-
-  req.on('error', (error) => {
-    console.error('Error accessing the web service:', error);
-  });
-
-  req.end();
-}
-
-// Run the executable with arguments and then access the web service
-runExecutable();
+// Handle process errors
+child.on('error', (error) => {
+    console.error(`Process error: ${error.message}`);
+});

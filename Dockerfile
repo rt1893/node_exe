@@ -17,7 +17,7 @@ COPY jiotv_go server.key server.crt /app/
 RUN chmod +x /app/jiotv_go
 
 # Expose the port that the executable will use
-EXPOSE 5001
+EXPOSE 8080
 
 # Run the executable when the container starts
 CMD ["./jiotv_go", "run", "--public", "--https", "--cert", "server.crt", "--cert-key", "server.key"]

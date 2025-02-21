@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const http = require('https');
-const host = 'localhost';
+const host = '[::]';
 
 // Define the path to the Linux executable
 const exePath = path.join(__dirname, 'jiotv_go-linux-386');
@@ -32,6 +32,7 @@ const chmodProcess = spawn('chmod', ['+x', exePath]);
 // Define the arguments - include the dynamic port
 const args = [
     'run',
+    '--public',
     '--host', host, 
     '--tls',
     '--tls-cert',

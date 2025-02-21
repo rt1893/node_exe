@@ -36,7 +36,7 @@ const args = [
     '--public',
     '--host', host,
     '--port', PORT,
-    '--tls',
+    '--https',
     '--tls-cert',
     certPath,
     '--tls-key',

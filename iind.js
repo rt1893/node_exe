@@ -30,7 +30,7 @@ chmod.on('close', (code) => {
         const args = [
             'serve',
             '--https',
-            '--host 0.0.0.0',
+            '--host', HOST,
             '--tls-cert', certPath,
             '--tls-key', keyPath,
         ];

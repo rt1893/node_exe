@@ -33,7 +33,7 @@ function runExecutable() {
 // Function to access the web service on port 5001
 function accessWebService() {
   const options = {
-    hostname: 'localhost',
+    hostname: '0.0.0.0',
     port: 5001, // Adjust the port if needed
     path: '/',
     method: 'GET',

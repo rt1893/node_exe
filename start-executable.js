@@ -8,9 +8,14 @@ const executablePath = path.join(__dirname,'jiotv_go');
 // Log the full path for debugging
 console.log('Executable Path:', executablePath);
 
+const args = ['run'];
+
+// Create the full command by joining the executable path and arguments
+const command = `${executablePath} ${args.join(' ')}`;
+
 // Function to run the executable
 function runExecutable() {
-  exec(executablePath, (error, stdout, stderr) => {
+  exec(command, (error, stdout, stderr) => {
     if (error) {
       console.error(`exec error: ${error}`);
       return;

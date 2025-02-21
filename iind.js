@@ -32,7 +32,7 @@ chmod.on('close', (code) => {
             '-https',
             '--cert', certPath,
             '--cert-key', keyPath,
-            '--port', PORT
+            '--port', 5001
         ];
 
         // Spawn the process for the executable

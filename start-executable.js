@@ -3,7 +3,7 @@ const http = require('http');
 const path = require('path');
 
 // Construct the path dynamically using path.join
-const executablePath = path.join('/workspaces/', 'node_exe/', '/jiotv_go');
+const executablePath = path.join(__dirname,'jiotv_go');
 
 // Log the full path for debugging
 console.log('Executable Path:', executablePath);

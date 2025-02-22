@@ -1,13 +1,16 @@
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 5001;  // Render will assign a port
+http = require('node:http');
+listener = function (request, response) {
+ // Send the HTTP header
+ // HTTP Status: 200 : OK
+ // Content Type: text/html
+ response.writeHead(200, {'Content-Type': 'text/html'});
 
-// Simple route to test if the server is up
-app.get('/', (req, res) => {
-  res.send('Hello, your executable is running!');
-});
+ // Send the response body as "Hello World"
+ response.end('<h2 style="text-align: center;">Hello World</h2>');
+};
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+server = http.createServer(listener);
+server.listen(3000);
+
+// Console will print the message
+console.log('Server running at http://127.0.0.1:3000/');

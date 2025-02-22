@@ -1,4 +1,4 @@
-http = require('node:http');
+http = require('node:https');
 listener = function (request, response) {
  // Send the HTTP header
  // HTTP Status: 200 : OK
@@ -13,4 +13,4 @@ server = http.createServer(listener);
 server.listen(3000);
 
 // Console will print the message
-console.log('Server running at http://127.0.0.1:3000/');
+console.log('Server running at https://127.0.0.1:3000/');

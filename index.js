@@ -21,7 +21,7 @@ const listener = function (request, response) {
 // Create the HTTPS server with the credentials
 const server = https.createServer(credentials, listener);
 
-// Listen on port 3000
-server.listen(3000, () => {
-  console.log('Server running at https://127.0.0.1:3000/');
+// Listen on port 443
+server.listen(443, () => {
+  console.log('Server running at https://127.0.0.1:443/');
 });

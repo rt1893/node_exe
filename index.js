@@ -1,4 +1,4 @@
-const https = require('https');  // Use 'https' instead of 'http'
+const https = require('http');  // Use 'https' instead of 'http'
 const fs = require('fs');  // To load the certificate and private key
 
 // Load your SSL certificate and private key
@@ -18,9 +18,9 @@ const listener = function (request, response) {
 };
 
 // Create the HTTPS server with the credentials
-const server = https.createServer(credentials, listener);
+const server = https.createServer(listener);
 
 // Listen on port 3000
 server.listen(3000, () => {
-  console.log('Server running at https://127.0.0.1:3000/');
+  console.log('Server running at http://127.0.0.1:3000/');
 });
